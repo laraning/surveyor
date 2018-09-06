@@ -76,9 +76,7 @@ trait UsesProfiles
             // Follow the profiles, and load all global scopes for this model.
             foreach ($profiles as $profile) {
                 foreach ($profile['scopes'] as $model => $scope) {
-                    info(get_called_class() . ' vs ' .$model);
                     if (get_called_class() == $model) {
-                        info('Apply global scope ' . $scope);
                         static::addGlobalScope(new $scope);
                     };
                 };
