@@ -8,7 +8,7 @@ use Laraning\Surveyor\Models\Profile;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Permission;
 
-trait HasProfiles
+trait UsesProfiles
 {
     public function profiles()
     {
@@ -46,17 +46,17 @@ trait HasProfiles
     {
         $profiles = (array) $profiles;
         foreach ($profiles as $profile) {
-            $ElectedProfile = Profile::where('code', $profile)->first();
+            $electedProfile = Profile::where('code', $profile)->first();
 
             // Profile exists and not assigned to user?
-            if (!is_null($ElectedProfile) && !$this->hasProfile($profile)) {
+            if (!is_null($electedProfile) && !$this->hasProfile($profile)) {
                 // Assign both role and permissions defined for this user profile.
                 // Into the Spatie Permissions.
-                $this->assignRole(Role::find([$ElectedProfile->role_id])->first()->name);
-                $this->givePermissionTo(Permission::find([$ElectedProfile->permission_id])->first()->name);
+                $this->assignRole(Role::find([$electedProfile->role_id])->first()->name);
+                $this->givePermissionTo(Permission::find([$electedProfile->permission_id])->first()->name);
 
                 // Assign user profile into the profiles table.
-                $this->profiles()->save($ElectedProfile);
+                $this->profiles()->save($electedProfile);
             };
         };
     }

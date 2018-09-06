@@ -7,6 +7,7 @@ use Laraning\Surveyor\Models\Profile;
 use Illuminate\Support\ServiceProvider;
 use Laraning\Surveyor\Models\ProfileScope;
 use Laraning\Surveyor\Observers\ProfileObserver;
+use Laraning\Surveyor\Commands\MakeNovaLinkCommand;
 use Laraning\Surveyor\Observers\ProfileScopeObserver;
 
 class SurveyorServiceProvider extends ServiceProvider
@@ -30,6 +31,7 @@ class SurveyorServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //
+        $this->commands([
+            MakeNovaLinkCommand::class]);
     }
 }
