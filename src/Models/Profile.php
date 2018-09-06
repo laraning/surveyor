@@ -37,9 +37,4 @@ class Profile extends Model
     {
         return $this->hasMany(ProfileScope::class);
     }
-
-    public function setCodeAttribute($value)
-    {
-        $this->attributes['code'] = str_replace('_', '-', snake_case($this->attributes['name'])) ;
-    }
 }
