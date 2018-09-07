@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laraning\Boost\Traits\CanCreateMany;
 use Spatie\Permission\Models\Permission;
 use Laraning\Surveyor\Models\ProfileScope;
+use Laraning\Surveyor\Models\ProfilePolicy;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Profile extends Model
@@ -36,5 +37,10 @@ class Profile extends Model
     public function scopes()
     {
         return $this->hasMany(ProfileScope::class);
+    }
+
+    public function policies()
+    {
+        return $this->hasMany(ProfilePolicy::class);
     }
 }

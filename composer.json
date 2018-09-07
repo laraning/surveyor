@@ -32,7 +32,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Laraning\\Surveyor\\SurveyorServiceProvider"
+                "Laraning\\Surveyor\\SurveyorServiceProvider",
+                "Laraning\\Surveyor\\AuthServiceProvider"
             ]
         }
     },

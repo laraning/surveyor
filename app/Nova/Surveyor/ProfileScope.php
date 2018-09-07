@@ -6,60 +6,46 @@ use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laraning\Boost\Rules\ClassExists;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Profile extends Resource
+class ProfileScope extends Resource
 {
-    public static $indexDefaultOrder = ['name' => 'asc'];
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = 'Laraning\\Surveyor\\Models\\Profile';
+    public static function label()
+    {
+        return 'Profile Scopes';
+    }
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
+    public static function singularLabel()
+    {
+        return 'Profile Scope';
+    }
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
+    public static $model = 'Laraning\\Surveyor\\Models\\ProfileScope';
+
+    public static $title = 'scope';
+
     public static $search = [
-        'id', 'name'
+        'id'
     ];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable()->onlyOnForms(),
 
-            Text::make('Name', 'name')
-                ->sortable()
-                ->rules('required', 'string'),
+            BelongsTo::make('Profile', 'profile', \App\Nova\Surveyor\Profile::class)
+                     ->rules('required'),
 
-            BelongsToMany::make('Users', 'users', \App\Nova\User::class)
-                         ->sortable()
-                         ->rules('required'),
+            Text::make('Model class namespace', 'model')
+                ->help('Full qualified model class name')
+                ->rules('required', new ClassExists),
 
-            HasMany::make('Policies', 'policies', \App\Nova\Surveyor\ProfilePolicy::class),
-
-            BelongsTo::make('Roles', 'role', \Vyuldashev\NovaPermission\Role::class),
-            BelongsTo::make('Permissions', 'permission', \Vyuldashev\NovaPermission\Permission::class),
+            Text::make('Model class namespace', 'scope')
+                ->help('Full qualified scope class name')
+                ->rules('required', new ClassExists),
         ];
     }
 

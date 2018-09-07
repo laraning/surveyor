@@ -2,6 +2,7 @@
 
 namespace Laraning\Surveyor;
 
+use Illuminate\Support\Facades\Gate;
 use Laraning\Boost\Traits\Migratable;
 use Laraning\Surveyor\Models\Profile;
 use Illuminate\Support\ServiceProvider;

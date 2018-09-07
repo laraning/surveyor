@@ -2,50 +2,47 @@
 
 namespace App\Nova\Surveyor;
 
+use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laraning\Boost\Rules\ClassExists;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laraning\Cheetah\Abstracts\CheetahResource;
 
-class Profile extends CheetahResource
+class ProfilePolicy extends Resource
 {
-    public static $indexDefaultOrder = ['name' => 'asc'];
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
+    public static function label()
+    {
+        return 'Profile Policies';
+    }
+
+    public static function singularLabel()
+    {
+        return 'Profile Policy';
+    }
+
     public static $model = 'Laraning\\Surveyor\\Models\\ProfilePolicy';
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
     public static $title = 'name';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id'
+        'id', 'name'
     ];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable()->onlyOnForms(),
+
+            Text::make('Policy class namespace', 'policy')
+                ->help('Full qualified class name')
+                ->rules('required', new ClassExists),
+
+            BelongsTo::make('Profile', 'profile', \App\Nova\Surveyor\Profile::class)
+                     ->rules('required'),
+
             Boolean::make('Before', 'before'),
             Boolean::make('View Any', 'view_any'),
             Boolean::make('View', 'view'),
@@ -53,7 +50,6 @@ class Profile extends CheetahResource
             Boolean::make('Update', 'update'),
             Boolean::make('Delete', 'delete'),
             Boolean::make('Force Delete', 'force_delete'),
-            BelongsTo::make(cheetah_trans('fields.profile'), 'profile', \App\Nova\Surveyor\Profile::class),
         ];
     }
 
