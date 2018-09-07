@@ -23,7 +23,6 @@ class ProfilePolicy extends Model
         'force_delete' => 'boolean'
     ];
 
-
     public function profile()
     {
         return $this->belongsTo(Profile::class);
