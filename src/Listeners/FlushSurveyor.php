@@ -5,6 +5,7 @@ namespace Laraning\Surveyor\Listeners;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Laraning\Surveyor\Bootstrap\SurveyorProvider;
 
 class FlushSurveyor
 {
@@ -27,8 +28,6 @@ class FlushSurveyor
      */
     public function handle()
     {
-        // Flush cheetah session.
-        @session_start();
-        unset($_SESSION['cheetah']);
+        SurveyorProvider::flush();
     }
 }

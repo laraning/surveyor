@@ -30,13 +30,15 @@ class SurveyorServiceProvider extends ServiceProvider
 
     protected function registerListeners()
     {
-        // User authenticated. Record user id in session.
         Event::listen('Illuminate\Auth\Events\Authenticated', function ($authenticated) {
             return (new BootSurveyor($authenticated))->handle();
         });
 
-        // User logout. Flush cheetah session.
         Event::listen('Illuminate\Auth\Events\Logout', function ($logout) {
+            return (new FlushSurveyor($logout))->handle();
+        });
+
+        Event::listen('Illuminate\Auth\Events\Failed', function ($logout) {
             return (new FlushSurveyor($logout))->handle();
         });
     }

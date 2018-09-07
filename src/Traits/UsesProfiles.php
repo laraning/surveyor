@@ -5,8 +5,8 @@ namespace Laraning\Surveyor\Traits;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Laraning\Surveyor\Models\Profile;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Permission;
+use Laraning\Surveyor\Models\ProfileScope;
 
 trait UsesProfiles
 {
@@ -59,30 +59,5 @@ trait UsesProfiles
                 $this->profiles()->save($electedProfile);
             };
         };
-    }
-
-    /**
-     * Apply model global scopes given the current logged user profiles.
-     * @return void
-     */
-    public static function applyScopesGivenLoggedProfiles()
-    {
-        @session_start();
-
-        if (array_key_exists('cheetah', $_SESSION)) {
-            $cheetah = $_SESSION['cheetah'];
-            $profiles = data_get($cheetah, 'user.profiles');
-
-            // Follow the profiles, and load all global scopes for this model.
-            foreach ($profiles as $profile) {
-                foreach ($profile['scopes'] as $model => $scope) {
-                    if (get_called_class() == $model) {
-                        static::addGlobalScope(new $scope);
-                    };
-                };
-            };
-        };
-
-        //static::addGlobalScope(new \Laraning\Surveyor\Scopes\MyUserScope);
     }
 }

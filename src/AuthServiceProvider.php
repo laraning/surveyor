@@ -2,9 +2,7 @@
 
 namespace Laraning\Surveyor;
 
-use Laraning\Cheetah\Models\Client;
 use Illuminate\Support\Facades\Gate;
-use Laraning\Cheetah\Policies\MyClientPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,7 +13,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Client::class => MyClientPolicy::class
     ];
 
     /**

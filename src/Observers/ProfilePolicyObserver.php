@@ -4,13 +4,16 @@ namespace Laraning\Surveyor\Observers;
 
 use Laraning\Surveyor\Models\Profile;
 
-class ProfileObserver
+class ProfilePolicyObserver
 {
     public function saving(Profile $model)
     {
-        // Snake case 'code' attribute, in case it comes empty.
-        if (empty($model->code)) {
-            $model->code = str_slug($model->name);
+        if ($model->policy[0] == '\\') {
+            $model->policy = substr($model->policy, 1);
+        };
+
+        if ($model->model[0] == '\\') {
+            $model->model = substr($model->model, 1);
         };
     }
 
