@@ -45,7 +45,7 @@ class Profile extends Resource
      */
     public function fields(Request $request)
     {
-        return [
+        $fields = [
             ID::make()->sortable()->onlyOnForms(),
 
             Text::make('Name', 'name')
@@ -57,10 +57,18 @@ class Profile extends Resource
                          ->rules('required'),
 
             HasMany::make('Policies', 'policies', \App\Nova\Surveyor\ProfilePolicy::class),
-
-            BelongsTo::make('Roles', 'role', \Vyuldashev\NovaPermission\Role::class),
-            BelongsTo::make('Permissions', 'permission', \Vyuldashev\NovaPermission\Permission::class),
         ];
+
+        if (me()->hasProfile('super-admin')) {
+            $adminFields = [
+                BelongsTo::make('Roles', 'role', \Vyuldashev\NovaPermission\Role::class),
+                BelongsTo::make('Permissions', 'permission', \Vyuldashev\NovaPermission\Permission::class)
+            ];
+
+            $fields = array_merge($fields, $adminFields);
+        }
+
+        return $fields;
     }
 
     /**
