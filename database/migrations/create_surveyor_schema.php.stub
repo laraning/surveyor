@@ -85,6 +85,50 @@ class CreateSurveyorSchema extends Migration
             $table->collation = 'utf8_unicode_ci';
         });
 
+        Schema::create('profile_policies', function (Blueprint $table) {
+            /** Columns */
+            $table->increments('id');
+            $table->integer('profile_id');
+
+            $table->string('model')
+                  ->comment('Model full qualified class namespace.');
+
+            $table->string('policy')
+                  ->comment('Policy full qualified class namespace.');
+
+            $table->boolean('viewAny')
+                  ->default(false);
+
+            $table->boolean('view')
+                  ->default(false);
+
+            $table->boolean('create')
+                  ->default(false);
+
+            $table->boolean('update')
+                  ->default(false);
+
+            $table->boolean('delete')
+                  ->default(false);
+
+            $table->boolean('restore')
+                  ->default(false);
+
+            $table->boolean('forceDelete')
+                  ->default(false);
+
+            /** System columns */
+            $table->timestamps();
+            $table->softDeletes();
+
+            /** Engine */
+            $table->engine = 'InnoDB';
+
+            /** Collation */
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+        });
+
         /** Relationships */
         /*
         Schema::table('user_profiles', function (Blueprint $table) {
@@ -92,8 +136,6 @@ class CreateSurveyorSchema extends Migration
             $table->foreign('role_id')->references('id')->on(config('permission.table_names.roles'));
         });
         */
-
-        /** Data seeds */
     }
 
     /**
@@ -106,5 +148,6 @@ class CreateSurveyorSchema extends Migration
         Schema::drop('profiles');
         Schema::drop('profile_user');
         Schema::drop('profile_scopes');
+        Schema::drop('profile_policies');
     }
 }

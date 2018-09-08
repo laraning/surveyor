@@ -2,7 +2,10 @@
 
 namespace Laraning\Surveyor\Bootstrap;
 
+use Laraning\Cheetah\Models\Client;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
+use Laraning\Cheetah\Policies\ClientPolicy;
 use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
@@ -19,12 +22,14 @@ class SurveyorProvider
          * - User profiles.
          * - User profile scopes.
          * - User profile policies.
+         * - User policy actions per policy.
          */
 
         $repository = [];
         $repository['user'] = ['id' => me()->id];
         $repository['scopes'] = [];
         $repository['policies'] = [];
+        $repository['policy'] = [];
 
         foreach (me()->profiles as $profile) {
             $repository['profiles'][$profile->code] = ['id' => $profile->id,
@@ -32,17 +37,19 @@ class SurveyorProvider
                                                        'name' => $profile->name];
 
             foreach ($profile->scopes as $scope) {
-                $repository['scopes'][$scope->model] = $scope->scope;
+                $repository['scopes'][$scope->model][] = $scope->scope;
             }
 
             foreach ($profile->policies as $policy) {
-                $repository['policies'][$policy->model] = ['policy' => $policy->policy,
-                                                           'view_any' => $policy->view_any,
-                                                           'view' => $policy->view,
-                                                           'create' => $policy->create,
-                                                           'update' => $policy->update,
-                                                           'delete' => $policy->delete,
-                                                           'restore' => $policy->force_delete];
+                $repository['policies'][$policy->model] = $policy->policy;
+
+                $repository['policy'][$policy->policy] = ['viewAny' => $policy->view_any,
+                                                          'view' => $policy->view,
+                                                          'create' => $policy->create,
+                                                          'update' => $policy->update,
+                                                          'delete' => $policy->delete,
+                                                          'forceDelete' => $policy->force_delete,
+                                                          'restore' => $policy->force_delete];
             }
         };
 
@@ -75,5 +82,16 @@ class SurveyorProvider
     {
         @session_start();
         unset($_SESSION['surveyor']);
+    }
+
+    public static function applyPolicies()
+    {
+        if (SurveyorProvider::isActive()) {
+            $repository = static::retrieve();
+
+            foreach ($repository['policies'] as $model => $policy) {
+                Gate::policy($model, $policy);
+            }
+        }
     }
 }

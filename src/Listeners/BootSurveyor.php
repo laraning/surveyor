@@ -28,7 +28,7 @@ class BootSurveyor
      */
     public function handle()
     {
-        // Bootstrap Surveyor.
         SurveyorProvider::init();
+        SurveyorProvider::applyPolicies();
     }
 }
