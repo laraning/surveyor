@@ -22,7 +22,6 @@ trait AppliesScopes
             foreach ($repository['scopes'] as $model => $scopes) {
                 foreach ($scopes as $scope) {
                     if (get_called_class() == $model) {
-                        info("Adding {$scope} global scope to ". get_called_class() . "model.");
                         static::addGlobalScope(new $scope);
                     }
                 }

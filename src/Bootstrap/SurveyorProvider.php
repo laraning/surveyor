@@ -3,6 +3,7 @@
 namespace Laraning\Surveyor\Bootstrap;
 
 use Laraning\Cheetah\Models\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
 use Laraning\Cheetah\Policies\ClientPolicy;
@@ -19,6 +20,7 @@ class SurveyorProvider
          * Ideally you should cache into a in-memory database like Redis.
          * The Surveyor repository defines:
          * - User information.
+         * - Client information.
          * - User profiles.
          * - User profile scopes.
          * - User profile policies.
@@ -27,9 +29,12 @@ class SurveyorProvider
 
         $repository = [];
         $repository['user'] = ['id' => me()->id];
+        $respository['client'] = [];
         $repository['scopes'] = [];
         $repository['policies'] = [];
         $repository['policy'] = [];
+
+        $repository['client'] = Client::where('id', Auth::user()->client_id)->get()->toArray();
 
         foreach (me()->profiles as $profile) {
             $repository['profiles'][$profile->code] = ['id' => $profile->id,
@@ -52,6 +57,8 @@ class SurveyorProvider
                                                           'restore' => $policy->force_delete];
             }
         };
+
+        dd($repository);
 
         static::store($repository);
     }
