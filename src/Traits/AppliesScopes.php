@@ -16,6 +16,7 @@ trait AppliesScopes
      */
     public static function bootAppliesScopes()
     {
+        SurveyorProvider::init();
         if (SurveyorProvider::isActive()) {
             $repository = SurveyorProvider::retrieve();
 

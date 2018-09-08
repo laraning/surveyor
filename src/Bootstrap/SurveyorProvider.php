@@ -27,40 +27,40 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        $repository = [];
-        $repository['user'] = ['id' => me()->id];
-        $respository['client'] = [];
-        $repository['scopes'] = [];
-        $repository['policies'] = [];
-        $repository['policy'] = [];
+        if (Auth::id() != null) {
+            $repository = [];
+            $repository['user'] = ['id' => me()->id];
+            $respository['client'] = [];
+            $repository['scopes'] = [];
+            $repository['policies'] = [];
+            $repository['policy'] = [];
 
-        $repository['client'] = Client::where('id', Auth::user()->client_id)->get()->toArray();
+            $repository['client']['id'] = Client::where('id', Auth::user()->client_id)->first()->id;
 
-        foreach (me()->profiles as $profile) {
-            $repository['profiles'][$profile->code] = ['id' => $profile->id,
+            foreach (me()->profiles as $profile) {
+                $repository['profiles'][$profile->code] = ['id' => $profile->id,
                                                        'code' => $profile->code,
                                                        'name' => $profile->name];
 
-            foreach ($profile->scopes as $scope) {
-                $repository['scopes'][$scope->model][] = $scope->scope;
-            }
+                foreach ($profile->scopes as $scope) {
+                    $repository['scopes'][$scope->model][] = $scope->scope;
+                }
 
-            foreach ($profile->policies as $policy) {
-                $repository['policies'][$policy->model] = $policy->policy;
+                foreach ($profile->policies as $policy) {
+                    $repository['policies'][$policy->model] = $policy->policy;
 
-                $repository['policy'][$policy->policy] = ['viewAny' => $policy->view_any,
+                    $repository['policy'][$policy->policy] = ['viewAny' => $policy->view_any,
                                                           'view' => $policy->view,
                                                           'create' => $policy->create,
                                                           'update' => $policy->update,
                                                           'delete' => $policy->delete,
                                                           'forceDelete' => $policy->force_delete,
                                                           'restore' => $policy->force_delete];
-            }
-        };
+                }
+            };
 
-        dd($repository);
-
-        static::store($repository);
+            static::store($repository);
+        }
     }
 
     private static function store($repository)
