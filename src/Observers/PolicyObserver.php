@@ -2,11 +2,11 @@
 
 namespace Laraning\Surveyor\Observers;
 
-use Laraning\Surveyor\Models\Profile;
+use Laraning\Surveyor\Models\Policy;
 
 class PolicyObserver
 {
-    public function saving(Profile $model)
+    public function saving(Policy $model)
     {
         if ($model->policy[0] == '\\') {
             $model->policy = substr($model->policy, 1);
@@ -17,27 +17,27 @@ class PolicyObserver
         };
     }
 
-    public function created(Profile $model)
+    public function created(Policy $model)
     {
         //
     }
 
-    public function updated(Profile $model)
+    public function updated(Policy $model)
     {
         //
     }
 
-    public function deleted(Profile $model)
+    public function deleted(Policy $model)
     {
         //
     }
 
-    public function restored(Profile $model)
+    public function restored(Policy $model)
     {
         //
     }
 
-    public function forceDeleted(Profile $model)
+    public function forceDeleted(Policy $model)
     {
         //
     }

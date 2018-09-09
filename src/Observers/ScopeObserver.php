@@ -2,11 +2,11 @@
 
 namespace Laraning\Surveyor\Observers;
 
-use Laraning\Surveyor\Models\ProfileScope;
+use Laraning\Surveyor\Models\Scope;
 
 class ScopeObserver
 {
-    public function saving(ProfileScope $model)
+    public function saving(Scope $model)
     {
         if ($model->scope[0] == '\\') {
             $model->scope = substr($model->scope, 1);
@@ -17,27 +17,27 @@ class ScopeObserver
         };
     }
 
-    public function created(ProfileScope $model)
+    public function created(Scope $model)
     {
         //
     }
 
-    public function updated(ProfileScope $model)
+    public function updated(Scope $model)
     {
         //
     }
 
-    public function deleted(ProfileScope $model)
+    public function deleted(Scope $model)
     {
         //
     }
 
-    public function restored(ProfileScope $model)
+    public function restored(Scope $model)
     {
         //
     }
 
-    public function forceDeleted(ProfileScope $model)
+    public function forceDeleted(Scope $model)
     {
         //
     }
