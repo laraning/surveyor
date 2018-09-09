@@ -22,14 +22,6 @@ class CreateSurveyorSchema extends Migration
                   ->nullable()
                   ->index();
 
-            $table->integer('role_id')
-                  ->unsigned()
-                  ->index();
-
-            $table->integer('permission_id')
-                  ->unsigned()
-                  ->index();
-
             /** System columns */
             $table->timestamps();
             $table->softDeletes();
@@ -96,7 +88,7 @@ class CreateSurveyorSchema extends Migration
             $table->string('policy')
                   ->comment('Policy full qualified class namespace.');
 
-            $table->boolean('viewAny')
+            $table->boolean('view_any')
                   ->default(false);
 
             $table->boolean('view')
@@ -114,7 +106,7 @@ class CreateSurveyorSchema extends Migration
             $table->boolean('restore')
                   ->default(false);
 
-            $table->boolean('forceDelete')
+            $table->boolean('force_delete')
                   ->default(false);
 
             /** System columns */
