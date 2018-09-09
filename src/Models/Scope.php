@@ -5,17 +5,20 @@ namespace Laraning\Surveyor\Models;
 use Laraning\Surveyor\Models\Profile;
 use Laraning\Boost\Traits\CanSaveMany;
 use Illuminate\Database\Eloquent\Model;
+use Laraning\Boost\Traits\CanCreateMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laraning\Surveyor\Abstracts\SurveyorModel;
 
-class ProfileScope extends Model
+class Scope extends SurveyorModel
 {
     use SoftDeletes;
+    use CanCreateMany;
     use CanSaveMany;
 
     protected $guarded = [];
 
-    public function profile()
+    public function profiles()
     {
-        return $this->belongsTo(Profile::class);
+        return $this->belongsToMany(Profile::class);
     }
 }

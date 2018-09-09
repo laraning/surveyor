@@ -2,14 +2,17 @@
 
 namespace Laraning\Surveyor;
 
+use Laraning\Surveyor\Models\Scope;
 use Illuminate\Support\Facades\Gate;
+use Laraning\Surveyor\Models\Policy;
 use Illuminate\Support\Facades\Event;
 use Laraning\Boost\Traits\Migratable;
 use Laraning\Surveyor\Models\Profile;
 use Illuminate\Support\ServiceProvider;
-use Laraning\Surveyor\Models\ProfileScope;
 use Laraning\Surveyor\Listeners\BootSurveyor;
 use Laraning\Surveyor\Listeners\FlushSurveyor;
+use Laraning\Surveyor\Observers\ScopeObserver;
+use Laraning\Surveyor\Observers\PolicyObserver;
 use Laraning\Surveyor\Observers\ProfileObserver;
 use Laraning\Surveyor\Commands\MakeNovaLinkCommand;
 use Laraning\Surveyor\Observers\ProfileScopeObserver;
@@ -46,12 +49,7 @@ class SurveyorServiceProvider extends ServiceProvider
     protected function registerObservers()
     {
         Profile::observe(ProfileObserver::class);
-        ProfileScope::observe(ProfileScopeObserver::class);
-    }
-
-    public function register()
-    {
-        $this->commands([
-            MakeNovaLinkCommand::class]);
+        Scope::observe(ScopeObserver::class);
+        Policy::observe(PolicyObserver::class);
     }
 }

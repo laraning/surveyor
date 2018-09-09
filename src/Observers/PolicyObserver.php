@@ -4,7 +4,7 @@ namespace Laraning\Surveyor\Observers;
 
 use Laraning\Surveyor\Models\Profile;
 
-class ProfilePolicyObserver
+class PolicyObserver
 {
     public function saving(Profile $model)
     {

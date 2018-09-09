@@ -4,7 +4,7 @@ namespace Laraning\Surveyor\Observers;
 
 use Laraning\Surveyor\Models\ProfileScope;
 
-class ProfileScopeObserver
+class ScopeObserver
 {
     public function saving(ProfileScope $model)
     {

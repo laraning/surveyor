@@ -59,11 +59,9 @@ class CreateSurveyorSchema extends Migration
                   ->unsigned()
                   ->index();
 
-            $table->string('model')
-                  ->comment('Model full qualified namespace.');
-
-            $table->string('scope')
-                  ->comment('Global scope full qualified namespace.');
+            $table->integer('scope_id')
+                  ->unsigned()
+                  ->index();
 
             /** System columns */
             $table->timestamps();
@@ -82,11 +80,9 @@ class CreateSurveyorSchema extends Migration
             $table->increments('id');
             $table->integer('profile_id');
 
-            $table->string('model')
-                  ->comment('Model full qualified class namespace.');
-
-            $table->string('policy')
-                  ->comment('Policy full qualified class namespace.');
+            $table->integer('policy_id')
+                  ->unsigned()
+                  ->index();
 
             $table->boolean('view_any')
                   ->default(false);
@@ -121,13 +117,47 @@ class CreateSurveyorSchema extends Migration
             $table->collation = 'utf8_unicode_ci';
         });
 
-        /** Relationships */
-        /*
-        Schema::table('user_profiles', function (Blueprint $table) {
-            $table->foreign('permission_id')->references('id')->on(config('permission.table_names.permissions'));
-            $table->foreign('role_id')->references('id')->on(config('permission.table_names.roles'));
+        Schema::create('scopes', function (Blueprint $table) {
+            /** Columns */
+            $table->increments('id');
+            $table->string('model')
+                  ->comment('Full qualified model class name.');
+
+            $table->string('scope')
+                  ->comment('Full qualified model global scope name.');
+
+            /** System columns */
+            $table->timestamps();
+            $table->softDeletes();
+
+            /** Engine */
+            $table->engine = 'InnoDB';
+
+            /** Collation */
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
         });
-        */
+
+        Schema::create('policies', function (Blueprint $table) {
+            /** Columns */
+            $table->increments('id');
+            $table->string('model')
+                  ->comment('Full qualified model class name.');
+
+            $table->string('policy')
+                  ->comment('Full qualified policy name.');
+
+            /** System columns */
+            $table->timestamps();
+            $table->softDeletes();
+
+            /** Engine */
+            $table->engine = 'InnoDB';
+
+            /** Collation */
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+        });
     }
 
     /**
@@ -141,5 +171,7 @@ class CreateSurveyorSchema extends Migration
         Schema::drop('profile_user');
         Schema::drop('profile_scopes');
         Schema::drop('profile_policies');
+        Schema::drop('scopes');
+        Schema::drop('policies');
     }
 }
