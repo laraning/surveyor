@@ -7,17 +7,17 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laraning\Surveyor\Fields\PolicyFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Profile extends Resource
 {
-    public static $indexDefaultOrder = ['name' => 'asc'];
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'Laraning\\Surveyor\\Models\\Profile';
+    public static $model = 'Laraning\\Surveyor\\Models\\Policy';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -44,21 +44,13 @@ class Profile extends Resource
         $fields = [
             ID::make()->sortable()->onlyOnForms(),
 
-            Text::make('Name', 'name')
-                ->sortable()
-                ->rules('required', 'string'),
+            Text::make('Model'),
+            Text::make('Policy'),
 
-            BelongsToMany::make('Users', 'users', \App\Nova\User::class)
+            BelongsToMany::make('Profiles', 'profiles', \App\Nova\Profile::class)
                          ->sortable()
-                         ->rules('required'),
-
-            BelongsToMany::make('Scopes', 'scopes', \App\Nova\Scope::class)
-                         ->sortable()
-                         ->rules('required'),
-
-            BelongsToMany::make('Policies', 'policies', \App\Nova\Policy::class)
-                         ->sortable()
-                         ->rules('required'),
+                         ->rules('required')
+                         ->fields(new PolicyFields)
         ];
 
         return $fields;
