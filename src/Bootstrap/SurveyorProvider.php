@@ -11,6 +11,8 @@ use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
 {
+    private static $repository;
+
     public static function init()
     {
         /**
@@ -27,7 +29,7 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null) {
+        if (Auth::id() != null && !static::isActive()) {
             $repository = [];
             $repository['user'] = ['id' => me()->id];
             $respository['client'] = [];
@@ -60,6 +62,13 @@ class SurveyorProvider
             };
 
             static::store($repository);
+
+            static::$repository = $repository;
+
+            Cache::rememberForever('surveyor', function () {
+                info('Saving surveyor in cache.');
+                return static::$repository;
+            });
         }
     }
 
@@ -71,6 +80,7 @@ class SurveyorProvider
 
     public static function retrieve()
     {
+        return Cache::get('surveyor');
         @session_start();
         if (array_key_exists('surveyor', $_SESSION)) {
             return $_SESSION['surveyor'];
@@ -81,12 +91,14 @@ class SurveyorProvider
 
     public static function isActive()
     {
+        return Cache::has('surveyor');
         @session_start();
         return array_key_exists('surveyor', $_SESSION);
     }
 
     public static function flush()
     {
+        Cache::forget('surveyor');
         @session_start();
         unset($_SESSION['surveyor']);
     }
