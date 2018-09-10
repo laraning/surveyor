@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laraning\Surveyor\Fields\PolicyFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Profile extends Resource
+class Policy extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -44,10 +44,12 @@ class Profile extends Resource
         $fields = [
             ID::make()->sortable()->onlyOnForms(),
 
+            Text::make('Name'),
+            Text::make('Code'),
             Text::make('Model'),
             Text::make('Policy'),
 
-            BelongsToMany::make('Profiles', 'profiles', \App\Nova\Profile::class)
+            BelongsToMany::make('Profiles', 'profiles', \App\Nova\Surveyor\Profile::class)
                          ->sortable()
                          ->rules('required')
                          ->fields(new PolicyFields)

@@ -48,13 +48,17 @@ class Profile extends Resource
                 ->sortable()
                 ->rules('required', 'string'),
 
+            Text::make('Code', 'code')
+                ->sortable()
+                ->rules('required', 'string'),
+
             BelongsToMany::make('Users', 'users', \App\Nova\User::class)
                          ->sortable(),
 
-            BelongsToMany::make('Scopes', 'scopes', \App\Nova\Scope::class)
+            BelongsToMany::make('Scopes', 'scopes', \App\Nova\Surveyor\Scope::class)
                          ->sortable(),
 
-            BelongsToMany::make('Policies', 'policies', \App\Nova\Policy::class)
+            BelongsToMany::make('Policies', 'policies', \App\Nova\Surveyor\Policy::class)
             ->fields(new PolicyFields),
         ];
 

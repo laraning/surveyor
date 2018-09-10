@@ -47,7 +47,7 @@ class Scope extends Resource
             Text::make('Model'),
             Text::make('Scope'),
 
-            BelongsToMany::make('Profiles', 'profiles', \App\Nova\Profile::class)
+            BelongsToMany::make('Profiles', 'profiles', \App\Nova\Surveyor\Profile::class)
         ];
 
         return $fields;
