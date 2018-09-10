@@ -19,7 +19,7 @@ class CreateSurveyorSchema extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('code')
-                  ->nullable()
+                  ->unique()
                   ->index();
 
             /** System columns */
@@ -50,9 +50,13 @@ class CreateSurveyorSchema extends Migration
             /** Collation */
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
+
+            /* Indexes */
+            $table->unique(['user_id', 'profile_id']);
         });
 
-        Schema::create('profile_scopes', function (Blueprint $table) {
+        // Pivot table.
+        Schema::create('profile_scope', function (Blueprint $table) {
             /** Columns */
             $table->increments('id');
             $table->integer('profile_id')
@@ -73,9 +77,13 @@ class CreateSurveyorSchema extends Migration
             /** Collation */
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
+
+            /* Indexes */
+            $table->unique(['profile_id', 'scope_id']);
         });
 
-        Schema::create('profile_policies', function (Blueprint $table) {
+        // Pivot table.
+        Schema::create('policy_profile', function (Blueprint $table) {
             /** Columns */
             $table->increments('id');
             $table->integer('profile_id');
@@ -115,16 +123,26 @@ class CreateSurveyorSchema extends Migration
             /** Collation */
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
+
+            /* Indexes */
+            $table->unique(['profile_id', 'policy_id']);
         });
 
         Schema::create('scopes', function (Blueprint $table) {
             /** Columns */
             $table->increments('id');
+            $table->string('name');
+            $table->string('code')
+                  ->unique();
+
             $table->string('model')
                   ->comment('Full qualified model class name.');
 
             $table->string('scope')
                   ->comment('Full qualified model global scope name.');
+
+            $table->text('description')
+                  ->nullable();
 
             /** System columns */
             $table->timestamps();
@@ -141,11 +159,22 @@ class CreateSurveyorSchema extends Migration
         Schema::create('policies', function (Blueprint $table) {
             /** Columns */
             $table->increments('id');
+            $table->string('name');
+            $table->string('code')
+                  ->unique()
+                  ->index();
+
             $table->string('model')
                   ->comment('Full qualified model class name.');
 
             $table->string('policy')
                   ->comment('Full qualified policy name.');
+
+            $table->text('description')
+                  ->nullable();
+
+            $table->boolean('is_data_restricted')
+                  ->comment('If this policy have data query restrictions on at least on policy method.');
 
             /** System columns */
             $table->timestamps();
@@ -157,6 +186,9 @@ class CreateSurveyorSchema extends Migration
             /** Collation */
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
+
+            /* Indexes */
+            $table->unique(['model', 'policy']);
         });
     }
 
@@ -169,8 +201,8 @@ class CreateSurveyorSchema extends Migration
     {
         Schema::drop('profiles');
         Schema::drop('profile_user');
-        Schema::drop('profile_scopes');
-        Schema::drop('profile_policies');
+        Schema::drop('profile_scope');
+        Schema::drop('policy_profile');
         Schema::drop('scopes');
         Schema::drop('policies');
     }
