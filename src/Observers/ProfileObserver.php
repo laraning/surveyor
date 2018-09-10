@@ -29,11 +29,6 @@ class ProfileObserver
         //
     }
 
-    public function restored(Profile $model)
-    {
-        //
-    }
-
     public function forceDeleted(Profile $model)
     {
         //

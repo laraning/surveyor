@@ -11,12 +11,6 @@ use Laraning\Surveyor\Abstracts\SurveyorModel;
 
 class Scope extends SurveyorModel
 {
-    use SoftDeletes;
-    use CanCreateMany;
-    use CanSaveMany;
-
-    protected $guarded = [];
-
     public function profiles()
     {
         return $this->belongsToMany(Profile::class);

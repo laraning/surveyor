@@ -14,13 +14,13 @@ class PolicyFields
     public function __invoke()
     {
         return [
-            Boolean::make('View Any', 'view_any'),
-            Boolean::make('View', 'view'),
-            Boolean::make('Create', 'create'),
-            Boolean::make('Update', 'update'),
-            Boolean::make('Delete', 'delete'),
-            Boolean::make('Force Delete', 'force_delete'),
-            Boolean::make('Restore', 'restore'),
+            Boolean::make('View Any', 'can_view_any'),
+            Boolean::make('View', 'can_view'),
+            Boolean::make('Create', 'can_create'),
+            Boolean::make('Update', 'can_update'),
+            Boolean::make('Delete', 'can_delete'),
+            Boolean::make('Force Delete', 'can_force_delete'),
+            Boolean::make('Restore', 'can_restore'),
         ];
     }
 }

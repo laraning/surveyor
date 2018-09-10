@@ -32,11 +32,6 @@ class ScopeObserver
         //
     }
 
-    public function restored(Scope $model)
-    {
-        //
-    }
-
     public function forceDeleted(Scope $model)
     {
         //

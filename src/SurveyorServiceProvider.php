@@ -50,8 +50,10 @@ class SurveyorServiceProvider extends ServiceProvider
 
     protected function registerObservers()
     {
+        /*
         Profile::observe(ProfileObserver::class);
         Scope::observe(ScopeObserver::class);
         Policy::observe(PolicyObserver::class);
+        */
     }
 }

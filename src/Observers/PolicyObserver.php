@@ -32,11 +32,6 @@ class PolicyObserver
         //
     }
 
-    public function restored(Policy $model)
-    {
-        //
-    }
-
     public function forceDeleted(Policy $model)
     {
         //
