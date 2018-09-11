@@ -8,14 +8,17 @@ class ScopeObserver
 {
     public function saving(Scope $model)
     {
-        info('Policy observer triggering saving OUTSIDE Nova.');
-
         if ($model->scope[0] == '\\') {
             $model->scope = substr($model->scope, 1);
         };
 
         if ($model->model[0] == '\\') {
             $model->model = substr($model->model, 1);
+        };
+
+        // Snake case 'code' attribute, in case it comes empty.
+        if (empty($model->code)) {
+            $model->code = str_slug($model->name);
         };
     }
 

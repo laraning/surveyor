@@ -28,7 +28,7 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null && static::$repository == null) {
+        if (Auth::id() != null && !static::isActive()) {
             $repository             = [];
             $repository['user']     = ['id' => me()->id];
             $respository['client']  = [];
@@ -66,28 +66,47 @@ class SurveyorProvider
 
     private static function store($repository)
     {
-        static::$repository = $repository;
+        @session_start();
+        $_SESSION['surveyor'] = $repository;
+        //static::$repository = $repository;
     }
 
     public static function retrieve()
     {
+        @session_start();
+        if (array_key_exists('surveyor', $_SESSION)) {
+            return $_SESSION['surveyor'];
+        }
+        /*
         if (is_array(static::$repository)) {
             if (count(static::$repository) > 0) {
                 return static::$repository;
             }
-        }
+        }*/
 
         throw RepositoryException::notInitialized();
     }
 
     public static function isActive()
     {
-        return is_array(static::$repository);
+        @session_start();
+        if (array_key_exists('surveyor', $_SESSION)) {
+            return true;
+        }
+
+        return false;
+
+        //return is_array(static::$repository);
     }
 
     public static function flush()
     {
-        static::$repository = null;
+        @session_start();
+        if (array_key_exists('surveyor', $_SESSION)) {
+            unset($_SESSION['surveyor']);
+        }
+
+        //static::$repository = null;
     }
 
     public static function applyPolicies()
@@ -96,7 +115,6 @@ class SurveyorProvider
             $repository = static::retrieve();
 
             foreach ($repository['policies'] as $model => $policy) {
-                info("Applying Policy {$policy} to Model {$model}");
                 Gate::policy($model, $policy);
             }
         }

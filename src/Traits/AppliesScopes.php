@@ -16,12 +16,12 @@ trait AppliesScopes
      */
     public static function bootAppliesScopes()
     {
-        SurveyorProvider::init();
         if (SurveyorProvider::isActive()) {
             $repository = SurveyorProvider::retrieve();
 
             foreach ($repository['scopes'] as $model => $scopes) {
                 foreach ($scopes as $scope) {
+                    info('trying scope ' . $scope . ' for model ' . $model);
                     if (get_called_class() == $model) {
                         static::addGlobalScope(new $scope);
                     }
