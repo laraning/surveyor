@@ -8,6 +8,8 @@ class ScopeObserver
 {
     public function saving(Scope $model)
     {
+        info('Policy observer triggering saving OUTSIDE Nova.');
+
         if ($model->scope[0] == '\\') {
             $model->scope = substr($model->scope, 1);
         };
