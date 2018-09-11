@@ -6,6 +6,7 @@ use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laraning\Surveyor\Fields\PolicyFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -59,7 +60,7 @@ class Profile extends Resource
                          ->sortable(),
 
             BelongsToMany::make('Policies', 'policies', \App\Nova\Surveyor\Policy::class)
-            ->fields(new PolicyFields),
+                         ->fields(new PolicyFields)
         ];
 
         return $fields;

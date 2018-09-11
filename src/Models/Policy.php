@@ -8,14 +8,7 @@ use Laraning\Surveyor\Abstracts\SurveyorModel;
 class Policy extends SurveyorModel
 {
     protected $casts = [
-        'is_data_restricted' => 'boolean',
-        'can_view_any' => 'boolean',
-        'can_view' => 'boolean',
-        'can_create' => 'boolean',
-        'can_update' => 'boolean',
-        'can_delete' => 'boolean',
-        'can_restore' => 'boolean',
-        'can_force_delete' => 'boolean',
+        'is_data_restricted' => 'boolean'
     ];
 
     public function profiles()
@@ -26,8 +19,8 @@ class Policy extends SurveyorModel
             'can_create',
             'can_update',
             'can_delete',
-            'can_restore',
-            'can_force_delete'
+            'can_force_delete',
+            'can_restore'
         );
     }
 }
