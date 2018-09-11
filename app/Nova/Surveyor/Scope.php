@@ -6,6 +6,8 @@ use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use Laraning\Surveyor\Models\Profile;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laraning\Surveyor\Fields\PolicyFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -44,8 +46,10 @@ class Scope extends Resource
         $fields = [
             ID::make()->sortable()->onlyOnForms(),
 
-            Text::make('Model'),
-            Text::make('Scope'),
+            Text::make('Name'),
+            Text::make('Code'),
+            Select::make('Profile')->options(Profile::all()->pluck('name', 'id'))->displayUsingLabels(),
+            Text::make('Scope Class')->help('Fully qualified Class name'),
 
             BelongsToMany::make('Profiles', 'profiles', \App\Nova\Surveyor\Profile::class)
         ];

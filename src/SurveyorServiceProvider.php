@@ -33,7 +33,6 @@ class SurveyorServiceProvider extends ServiceProvider
 
     protected function registerListeners()
     {
-        /*
         Event::listen('Illuminate\Auth\Events\Authenticated', function ($authenticated) {
             return (new BootSurveyor($authenticated))->handle();
         });
@@ -45,15 +44,12 @@ class SurveyorServiceProvider extends ServiceProvider
         Event::listen('Illuminate\Auth\Events\Failed', function ($logout) {
             return (new FlushSurveyor($logout))->handle();
         });
-        */
     }
 
     protected function registerObservers()
     {
-        /*
         Profile::observe(ProfileObserver::class);
         Scope::observe(ScopeObserver::class);
         Policy::observe(PolicyObserver::class);
-        */
     }
 }

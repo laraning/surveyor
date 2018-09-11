@@ -5,13 +5,12 @@ namespace Laraning\Surveyor\Bootstrap;
 use Laraning\Cheetah\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Cache;
 use Laraning\Cheetah\Policies\ClientPolicy;
 use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
 {
-    private static $repository;
+    private static $repository = null;
 
     public static function init()
     {
@@ -29,20 +28,20 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null && !static::isActive()) {
-            $repository = [];
-            $repository['user'] = ['id' => me()->id];
-            $respository['client'] = [];
-            $repository['scopes'] = [];
+        if (Auth::id() != null && static::$repository == null) {
+            $repository             = [];
+            $repository['user']     = ['id' => me()->id];
+            $respository['client']  = [];
+            $repository['scopes']   = [];
             $repository['policies'] = [];
-            $repository['policy'] = [];
+            $repository['policy']   = [];
 
             $repository['client']['id'] = Client::where('id', Auth::user()->client_id)->first()->id;
 
             foreach (me()->profiles as $profile) {
                 $repository['profiles'][$profile->code] = ['id' => $profile->id,
-                                                       'code' => $profile->code,
-                                                       'name' => $profile->name];
+                                                           'code' => $profile->code,
+                                                           'name' => $profile->name];
 
                 foreach ($profile->scopes as $scope) {
                     $repository['scopes'][$scope->model][] = $scope->scope;
@@ -51,39 +50,31 @@ class SurveyorProvider
                 foreach ($profile->policies as $policy) {
                     $repository['policies'][$policy->model] = $policy->policy;
 
-                    $repository['policy'][$policy->policy] = ['viewAny' => $policy->view_any,
-                                                          'view' => $policy->view,
-                                                          'create' => $policy->create,
-                                                          'update' => $policy->update,
-                                                          'delete' => $policy->delete,
-                                                          'forceDelete' => $policy->force_delete,
-                                                          'restore' => $policy->force_delete];
+                    $repository['policy'][$policy->policy] = ['viewAny' => $policy->pivot->can_view_any,
+                                                              'view' => $policy->pivot->can_view,
+                                                              'create' => $policy->pivot->can_create,
+                                                              'update' => $policy->pivot->can_update,
+                                                              'delete' => $policy->pivot->can_delete,
+                                                              'forceDelete' => $policy->pivot->can_force_delete,
+                                                              'restore' => $policy->pivot->can_restore];
                 }
             };
 
             static::store($repository);
-
-            static::$repository = $repository;
-
-            Cache::rememberForever('surveyor', function () {
-                info('Saving surveyor in cache.');
-                return static::$repository;
-            });
         }
     }
 
     private static function store($repository)
     {
-        @session_start();
-        $_SESSION['surveyor'] = $repository;
+        static::$repository = $repository;
     }
 
     public static function retrieve()
     {
-        return Cache::get('surveyor');
-        @session_start();
-        if (array_key_exists('surveyor', $_SESSION)) {
-            return $_SESSION['surveyor'];
+        if (is_array(static::$repository)) {
+            if (count(static::$repository) > 0) {
+                return static::$repository;
+            }
         }
 
         throw RepositoryException::notInitialized();
@@ -91,16 +82,12 @@ class SurveyorProvider
 
     public static function isActive()
     {
-        return Cache::has('surveyor');
-        @session_start();
-        return array_key_exists('surveyor', $_SESSION);
+        return is_array(static::$repository);
     }
 
     public static function flush()
     {
-        Cache::forget('surveyor');
-        @session_start();
-        unset($_SESSION['surveyor']);
+        static::$repository = null;
     }
 
     public static function applyPolicies()
@@ -109,6 +96,7 @@ class SurveyorProvider
             $repository = static::retrieve();
 
             foreach ($repository['policies'] as $model => $policy) {
+                info("Applying Policy {$policy} to Model {$model}");
                 Gate::policy($model, $policy);
             }
         }

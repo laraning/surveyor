@@ -8,7 +8,8 @@ use Laraning\Surveyor\Abstracts\SurveyorModel;
 class Policy extends SurveyorModel
 {
     protected $casts = [
-        'is_data_restricted' => 'boolean'
+        'is_data_restricted' => 'boolean',
+        'can_view_any' => 'boolean'
     ];
 
     public function profiles()
