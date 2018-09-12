@@ -68,7 +68,6 @@ class SurveyorProvider
     {
         @session_start();
         $_SESSION['surveyor'] = $repository;
-        //static::$repository = $repository;
     }
 
     public static function retrieve()
@@ -77,12 +76,6 @@ class SurveyorProvider
         if (array_key_exists('surveyor', $_SESSION)) {
             return $_SESSION['surveyor'];
         }
-        /*
-        if (is_array(static::$repository)) {
-            if (count(static::$repository) > 0) {
-                return static::$repository;
-            }
-        }*/
 
         throw RepositoryException::notInitialized();
     }
@@ -95,8 +88,6 @@ class SurveyorProvider
         }
 
         return false;
-
-        //return is_array(static::$repository);
     }
 
     public static function flush()
@@ -105,8 +96,6 @@ class SurveyorProvider
         if (array_key_exists('surveyor', $_SESSION)) {
             unset($_SESSION['surveyor']);
         }
-
-        //static::$repository = null;
     }
 
     public static function applyPolicies()
