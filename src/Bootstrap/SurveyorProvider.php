@@ -36,7 +36,7 @@ class SurveyorProvider
             $repository['policies'] = [];
             $repository['policy']   = [];
 
-            $repository['client']['id'] = Client::where('id', Auth::user()->client_id)->first()->id;
+            $repository['client']['id'] = Client::where('id', Auth::user()->client->id)->first()->id;
 
             foreach (me()->profiles as $profile) {
                 $repository['profiles'][$profile->code] = ['id' => $profile->id,
