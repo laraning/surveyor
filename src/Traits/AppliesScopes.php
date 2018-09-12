@@ -18,7 +18,6 @@ trait AppliesScopes
     {
         if (SurveyorProvider::isActive()) {
             $repository = SurveyorProvider::retrieve();
-
             foreach ($repository['scopes'] as $model => $scopes) {
                 foreach ($scopes as $scope) {
                     if (get_called_class() == $model) {

@@ -28,7 +28,7 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null && !static::isActive()) {
+        if (Auth::id() != null) {
             $repository             = [];
             $repository['user']     = ['id' => me()->id];
             $respository['client']  = [];

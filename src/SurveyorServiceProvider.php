@@ -14,6 +14,7 @@ use Laraning\Surveyor\Listeners\FlushSurveyor;
 use Laraning\Surveyor\Observers\ScopeObserver;
 use Laraning\Surveyor\Observers\PolicyObserver;
 use Laraning\Surveyor\Observers\ProfileObserver;
+use Laraning\Surveyor\Bootstrap\SurveyorProvider;
 use Laraning\Surveyor\Commands\MakeNovaLinkCommand;
 use Laraning\Surveyor\Observers\ProfileScopeObserver;
 
