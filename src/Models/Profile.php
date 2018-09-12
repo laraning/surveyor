@@ -2,6 +2,7 @@
 
 namespace Laraning\Surveyor\Models;
 
+use Laraning\Cheetah\Models\User;
 use Laraning\Surveyor\Models\Scope;
 use Laraning\Surveyor\Models\Policy;
 use Laraning\Surveyor\Abstracts\SurveyorModel;
@@ -10,12 +11,12 @@ class Profile extends SurveyorModel
 {
     public function users()
     {
-        return $this->belongsToMany(config('auth.providers.users.model'))->withTimestamps();
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
     public function scopes()
     {
-        return $this->belongsToMany(Scope::class);
+        return $this->belongsToMany(Scope::class)->withTimestamps();
     }
 
     public function policies()
@@ -28,6 +29,6 @@ class Profile extends SurveyorModel
             'can_delete',
             'can_force_delete',
             'can_restore'
-        );
+        )->withTimestamps();
     }
 }

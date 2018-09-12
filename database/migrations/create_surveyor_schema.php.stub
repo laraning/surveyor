@@ -18,6 +18,10 @@ class CreateSurveyorSchema extends Migration
             /** Columns */
             $table->increments('id');
             $table->string('name');
+
+            $table->string('description')
+                  ->nullable();
+
             $table->string('code')
                   ->unique()
                   ->index();
@@ -92,25 +96,25 @@ class CreateSurveyorSchema extends Migration
                   ->unsigned()
                   ->index();
 
-            $table->boolean('view_any')
+            $table->boolean('can_view_any')
                   ->default(false);
 
-            $table->boolean('view')
+            $table->boolean('can_view')
                   ->default(false);
 
-            $table->boolean('create')
+            $table->boolean('can_create')
                   ->default(false);
 
-            $table->boolean('update')
+            $table->boolean('can_update')
                   ->default(false);
 
-            $table->boolean('delete')
+            $table->boolean('can_delete')
                   ->default(false);
 
-            $table->boolean('restore')
+            $table->boolean('can_restore')
                   ->default(false);
 
-            $table->boolean('force_delete')
+            $table->boolean('can_force_delete')
                   ->default(false);
 
             /** System columns */
@@ -132,6 +136,9 @@ class CreateSurveyorSchema extends Migration
             /** Columns */
             $table->increments('id');
             $table->string('name');
+            $table->string('description')
+                  ->nullable();
+
             $table->string('code')
                   ->unique();
 
@@ -140,9 +147,6 @@ class CreateSurveyorSchema extends Migration
 
             $table->string('scope')
                   ->comment('Full qualified model global scope name.');
-
-            $table->text('description')
-                  ->nullable();
 
             /** System columns */
             $table->timestamps();
