@@ -11,7 +11,7 @@ class ProfileObserver
         // Snake case 'code' attribute, in case it comes empty.
         if (empty($model->code)) {
             $model->code = str_slug($model->name);
-        };
+        }
     }
 
     public function created(Profile $model)
