@@ -8,6 +8,6 @@ class Scope extends SurveyorModel
 {
     public function profiles()
     {
-        return $this->belongsToMany(Profile::class);
+        return $this->belongsToMany(Profile::class)->withTimestamps();
     }
 }

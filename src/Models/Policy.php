@@ -21,6 +21,6 @@ class Policy extends SurveyorModel
             'can_delete',
             'can_force_delete',
             'can_restore'
-        );
+        )->withTimestamps();
     }
 }
