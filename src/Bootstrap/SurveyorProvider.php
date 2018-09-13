@@ -2,10 +2,9 @@
 
 namespace Laraning\Surveyor\Bootstrap;
 
-use Laraning\Cheetah\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Laraning\Cheetah\Policies\ClientPolicy;
+use Laraning\Cheetah\Models\Client;
 use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
@@ -14,7 +13,7 @@ class SurveyorProvider
 
     public static function init()
     {
-        /**
+        /*
          * Surveyor constructs your user structure into Laravel cache.
          * Reason is it's faster to access since it will run on each request
          * action.
@@ -29,17 +28,17 @@ class SurveyorProvider
          */
 
         if (Auth::id() != null && !static::isActive()) {
-            $repository             = [];
-            $repository['scopes']   = [];
+            $repository = [];
+            $repository['scopes'] = [];
             $repository['policies'] = [];
-            $repository['policy']   = [];
+            $repository['policy'] = [];
 
             data_set($repository, 'user.id', Auth::id());
 
             foreach (me()->profiles as $profile) {
                 $repository['profiles'][$profile->code] = ['id'   => $profile->id,
                                                            'code' => $profile->code,
-                                                           'name' => $profile->name];
+                                                           'name' => $profile->name, ];
 
                 foreach ($profile->scopes as $scope) {
                     $repository['scopes'][$scope->model][] = $scope->scope;
@@ -55,9 +54,9 @@ class SurveyorProvider
                       'update'      => $policy->pivot->can_update,
                       'delete'      => $policy->pivot->can_delete,
                       'forceDelete' => $policy->pivot->can_force_delete,
-                      'restore'     => $policy->pivot->can_restore];
+                      'restore'     => $policy->pivot->can_restore, ];
                 }
-            };
+            }
 
             static::store($repository);
         }
@@ -121,6 +120,7 @@ class SurveyorProvider
     {
         if (static::isActive()) {
             $repository = static::retrieve();
+
             return data_get($repository, $path);
         }
     }

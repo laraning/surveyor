@@ -2,14 +2,13 @@
 
 namespace Laraning\Surveyor\Models;
 
-use Laraning\Surveyor\Models\Profile;
 use Laraning\Surveyor\Abstracts\SurveyorModel;
 
 class Policy extends SurveyorModel
 {
     protected $casts = [
         'is_data_restricted' => 'boolean',
-        'can_view_any' => 'boolean'
+        'can_view_any'       => 'boolean',
     ];
 
     public function profiles()

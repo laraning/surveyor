@@ -3,8 +3,6 @@
 namespace Laraning\Surveyor\Models;
 
 use Laraning\Cheetah\Models\User;
-use Laraning\Surveyor\Models\Scope;
-use Laraning\Surveyor\Models\Policy;
 use Laraning\Surveyor\Abstracts\SurveyorModel;
 
 class Profile extends SurveyorModel

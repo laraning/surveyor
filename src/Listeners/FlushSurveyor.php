@@ -2,14 +2,12 @@
 
 namespace Laraning\Surveyor\Listeners;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Laraning\Surveyor\Bootstrap\SurveyorProvider;
 
 class FlushSurveyor
 {
     public $event;
+
     /**
      * Create the event listener.
      *
@@ -23,7 +21,8 @@ class FlushSurveyor
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param object $event
+     *
      * @return void
      */
     public function handle()
