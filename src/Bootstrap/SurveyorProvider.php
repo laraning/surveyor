@@ -10,7 +10,7 @@ use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
 {
-    private static $repository = null;
+    public static $repository = null;
 
     public static function init()
     {
@@ -28,18 +28,16 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null) {
+        if (Auth::id() != null && !static::isActive()) {
             $repository             = [];
-            $repository['user']     = ['id' => me()->id];
-            $respository['client']  = [];
             $repository['scopes']   = [];
             $repository['policies'] = [];
             $repository['policy']   = [];
 
-            $repository['client']['id'] = Client::where('id', Auth::user()->client->id)->first()->id;
+            data_set($repository, 'user.id', Auth::id());
 
             foreach (me()->profiles as $profile) {
-                $repository['profiles'][$profile->code] = ['id' => $profile->id,
+                $repository['profiles'][$profile->code] = ['id'   => $profile->id,
                                                            'code' => $profile->code,
                                                            'name' => $profile->name];
 
@@ -50,13 +48,14 @@ class SurveyorProvider
                 foreach ($profile->policies as $policy) {
                     $repository['policies'][$policy->model] = $policy->policy;
 
-                    $repository['policy'][$policy->policy] = ['viewAny' => $policy->pivot->can_view_any,
-                                                              'view' => $policy->pivot->can_view,
-                                                              'create' => $policy->pivot->can_create,
-                                                              'update' => $policy->pivot->can_update,
-                                                              'delete' => $policy->pivot->can_delete,
-                                                              'forceDelete' => $policy->pivot->can_force_delete,
-                                                              'restore' => $policy->pivot->can_restore];
+                    $repository['policy'][$policy->policy] = [
+                      'viewAny'     => $policy->pivot->can_view_any,
+                      'view'        => $policy->pivot->can_view,
+                      'create'      => $policy->pivot->can_create,
+                      'update'      => $policy->pivot->can_update,
+                      'delete'      => $policy->pivot->can_delete,
+                      'forceDelete' => $policy->pivot->can_force_delete,
+                      'restore'     => $policy->pivot->can_restore];
                 }
             };
 
@@ -100,12 +99,29 @@ class SurveyorProvider
 
     public static function applyPolicies()
     {
-        if (SurveyorProvider::isActive()) {
+        if (static::isActive()) {
             $repository = static::retrieve();
 
             foreach ($repository['policies'] as $model => $policy) {
                 Gate::policy($model, $policy);
             }
+        }
+    }
+
+    public static function add($path, $value)
+    {
+        if (static::isActive()) {
+            $repository = static::retrieve();
+            data_set($repository, $path, $value);
+            static::store($repository);
+        }
+    }
+
+    public static function contains($path)
+    {
+        if (static::isActive()) {
+            $repository = static::retrieve();
+            return data_get($repository, $path);
         }
     }
 }
