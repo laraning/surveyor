@@ -37,7 +37,7 @@ class SurveyorProvider
                 foreach (me()->profiles as $profile) {
                     $repository['profiles'][$profile->code] = ['id'   => $profile->id,
                                                                'code' => $profile->code,
-                                                               'name' => $profile->name];
+                                                               'name' => $profile->name, ];
 
                     foreach ($profile->scopes as $scope) {
                         $repository['scopes'][$scope->model][] = $scope->scope;
@@ -54,9 +54,9 @@ class SurveyorProvider
                           'delete'      => $policy->pivot->can_delete,
                           'forceDelete' => $policy->pivot->can_force_delete,
                           'restore'     => $policy->pivot->can_restore, ];
-                    };
-                };
-            };
+                    }
+                }
+            }
 
             static::store($repository);
         }
