@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "laraning/boost": "^1.0",
+        "laraning/boost": "*",
         "illuminate/support": "5.7.*"
     },
     "require-dev": {
