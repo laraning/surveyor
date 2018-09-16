@@ -4,7 +4,6 @@ namespace Laraning\Surveyor\Bootstrap;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Laraning\Cheetah\Models\Client;
 use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
@@ -20,7 +19,6 @@ class SurveyorProvider
          * Ideally you should cache into a in-memory database like Redis.
          * The Surveyor repository defines:
          * - User information.
-         * - Client information.
          * - User profiles.
          * - User profile scopes.
          * - User profile policies.

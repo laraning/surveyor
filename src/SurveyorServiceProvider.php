@@ -24,8 +24,19 @@ class SurveyorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishMigrations('surveyor');
+
         $this->registerObservers();
+
         $this->registerListeners();
+
+        $this->registerPublishing();
+    }
+
+    protected function registerPublishing()
+    {
+        $this->publishes([
+            __DIR__.'/../config/surveyor.php' => config_path('surveyor.php'),
+        ], 'surveyor-config');
     }
 
     protected function registerListeners()
