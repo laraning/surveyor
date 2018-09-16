@@ -35,28 +35,30 @@ class SurveyorProvider
 
             data_set($repository, 'user.id', Auth::id());
 
-            foreach (me()->profiles as $profile) {
-                $repository['profiles'][$profile->code] = ['id'   => $profile->id,
-                                                           'code' => $profile->code,
-                                                           'name' => $profile->name, ];
+            if (!is_null(me()->profiles)) {
+                foreach (me()->profiles as $profile) {
+                    $repository['profiles'][$profile->code] = ['id'   => $profile->id,
+                                                               'code' => $profile->code,
+                                                               'name' => $profile->name];
 
-                foreach ($profile->scopes as $scope) {
-                    $repository['scopes'][$scope->model][] = $scope->scope;
-                }
+                    foreach ($profile->scopes as $scope) {
+                        $repository['scopes'][$scope->model][] = $scope->scope;
+                    }
 
-                foreach ($profile->policies as $policy) {
-                    $repository['policies'][$policy->model] = $policy->policy;
+                    foreach ($profile->policies as $policy) {
+                        $repository['policies'][$policy->model] = $policy->policy;
 
-                    $repository['policy'][$policy->policy] = [
-                      'viewAny'     => $policy->pivot->can_view_any,
-                      'view'        => $policy->pivot->can_view,
-                      'create'      => $policy->pivot->can_create,
-                      'update'      => $policy->pivot->can_update,
-                      'delete'      => $policy->pivot->can_delete,
-                      'forceDelete' => $policy->pivot->can_force_delete,
-                      'restore'     => $policy->pivot->can_restore, ];
-                }
-            }
+                        $repository['policy'][$policy->policy] = [
+                          'viewAny'     => $policy->pivot->can_view_any,
+                          'view'        => $policy->pivot->can_view,
+                          'create'      => $policy->pivot->can_create,
+                          'update'      => $policy->pivot->can_update,
+                          'delete'      => $policy->pivot->can_delete,
+                          'forceDelete' => $policy->pivot->can_force_delete,
+                          'restore'     => $policy->pivot->can_restore, ];
+                    };
+                };
+            };
 
             static::store($repository);
         }
