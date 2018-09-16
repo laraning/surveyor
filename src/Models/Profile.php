@@ -2,14 +2,13 @@
 
 namespace Laraning\Surveyor\Models;
 
-use Laraning\Cheetah\Models\User;
 use Laraning\Surveyor\Abstracts\SurveyorModel;
 
 class Profile extends SurveyorModel
 {
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(config('surveyor.user_class'))->withTimestamps();
     }
 
     public function scopes()
