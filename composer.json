@@ -1,20 +1,16 @@
 {
     "name": "laraning/surveyor",
-    "description": "Surveyor - An user profile roles and permissions administration package.",
+    "description": "Surveyor - Manage your global scopes and policies in a Laravel application.",
     "type": "library",
     "keywords": [
-        "utilities",
-        "waygou",
+        "laraning",
         "laravel",
         "php"
     ],
     "require": {
         "php": "^7.1",
-        "laraning/boost": "dev-master",
-        "illuminate/support": "5.6.*|5.7.*",
-        "predis/predis": "^1.1",
-        "tightenco/parental": "dev-master",
-        "predis/predis": "^1.1"
+        "laraning/boost": "^1.0",
+        "illuminate/support": "5.7.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.1"
