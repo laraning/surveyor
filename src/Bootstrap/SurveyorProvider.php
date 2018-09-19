@@ -8,8 +8,6 @@ use Laraning\Surveyor\Exceptions\RepositoryException;
 
 class SurveyorProvider
 {
-    public static $repository = null;
-
     public static function init()
     {
         /*
@@ -25,7 +23,16 @@ class SurveyorProvider
          * - User policy actions per policy.
          */
 
-        if (Auth::id() != null) {
+        // Security validation.
+        // The current logged user id is equal to the Surveyor user id?
+        if (Auth::id() != null && static::isActive()) {
+            $repository = static::retrieve();
+            if (data_get($repository, 'user.id') != Auth::id()) {
+                static::flush();
+            };
+        };
+
+        if (Auth::id() != null && !static::isActive()) {
             $repository = [];
             $repository['scopes'] = [];
             $repository['policies'] = [];
