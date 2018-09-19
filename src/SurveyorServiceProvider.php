@@ -2,18 +2,17 @@
 
 namespace Laraning\Surveyor;
 
-use Laraning\Surveyor\Models\Scope;
-use Laraning\Surveyor\Models\Policy;
 use Illuminate\Support\Facades\Event;
-use Laraning\Boost\Traits\Migratable;
-use Laraning\Surveyor\Models\Profile;
 use Illuminate\Support\ServiceProvider;
+use Laraning\Boost\Traits\Migratable;
 use Laraning\Surveyor\Listeners\BootSurveyor;
 use Laraning\Surveyor\Listeners\FlushSurveyor;
-use Laraning\Surveyor\Observers\ScopeObserver;
+use Laraning\Surveyor\Models\Policy;
+use Laraning\Surveyor\Models\Profile;
+use Laraning\Surveyor\Models\Scope;
 use Laraning\Surveyor\Observers\PolicyObserver;
 use Laraning\Surveyor\Observers\ProfileObserver;
-use Laraning\Surveyor\Bootstrap\SurveyorProvider;
+use Laraning\Surveyor\Observers\ScopeObserver;
 
 class SurveyorServiceProvider extends ServiceProvider
 {

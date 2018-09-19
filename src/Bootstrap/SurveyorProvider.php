@@ -29,8 +29,8 @@ class SurveyorProvider
             $repository = static::retrieve();
             if (data_get($repository, 'user.id') != Auth::id()) {
                 static::flush();
-            };
-        };
+            }
+        }
 
         if (Auth::id() != null && !static::isActive()) {
             $repository = [];
